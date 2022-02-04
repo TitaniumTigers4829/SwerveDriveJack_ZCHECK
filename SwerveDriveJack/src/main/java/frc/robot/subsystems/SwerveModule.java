@@ -72,9 +72,30 @@ public class SwerveModule extends SubsystemBase {
     return new SwerveModuleState(getDriveVelocity(), new Rotation2d(getTurnAngle()));
   }
 
+  public void stopModule() {
+    driveMotor.set(0);
+    turnMotor.set(0);
+  }
+
+  public void setDesiredState(SwerveModuleState state) {
+    if (Math.abs(state.speedMetersPerSecond) < 0.005) {
+      stopModule();
+      return
+    }
+    // Optimizes angle so the wheel won't ever have to move more than 90 degrees
+    state = SwerveModuleState.optimize(state, getState().angle);
+    // Sets the drive motor's speed from 0.0 to 1.0
+    driveMotor.set(state.speedMetersPerSecond / ModuleConstants.physicalMaxSpeedMetersPerSecond);
+    // TODO: ask how to get the built in PID working, also for trying to fix maybe using PID Controller class is a good idea
+    turnMotor.set();
+    SmartDashboard.putString("Module " + driveMotorID.toString() + ", State: " + state.toString());
+  }
 
   @Override
   public void periodic() {
+
+    // TODO: Ask for examples of what goes in here
+
     // This method will be called once per scheduler run
   }
 }
