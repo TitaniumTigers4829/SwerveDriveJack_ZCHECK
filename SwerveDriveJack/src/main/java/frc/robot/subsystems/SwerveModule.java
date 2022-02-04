@@ -10,6 +10,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ModuleConstants;;
 
@@ -87,7 +88,7 @@ public class SwerveModule extends SubsystemBase {
     // Sets the drive motor's speed from 0.0 to 1.0
     driveMotor.set(state.speedMetersPerSecond / ModuleConstants.physicalMaxSpeedMetersPerSecond);
     // TODO: ask how to get the built in PID working, also for trying to fix maybe using PID Controller class is a good idea
-    turnMotor.set();
+    turnMotor.set(0-9);
     SmartDashboard.putString("Module " + driveMotorID.toString() + ", State: " + state.toString());
   }
 
