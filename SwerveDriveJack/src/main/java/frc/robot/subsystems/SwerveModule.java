@@ -12,7 +12,8 @@ import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.ModuleConstants;;
+
+import frc.robot.Constants.ModuleConstants;
 
 public class SwerveModule extends SubsystemBase {
 
@@ -81,7 +82,7 @@ public class SwerveModule extends SubsystemBase {
   public void setDesiredState(SwerveModuleState state) {
     if (Math.abs(state.speedMetersPerSecond) < 0.005) {
       stopModule();
-      return
+      return;
     }
     // Optimizes angle so the wheel won't ever have to move more than 90 degrees
     state = SwerveModuleState.optimize(state, getState().angle);
@@ -89,7 +90,7 @@ public class SwerveModule extends SubsystemBase {
     driveMotor.set(state.speedMetersPerSecond / ModuleConstants.physicalMaxSpeedMetersPerSecond);
     // TODO: ask how to get the built in PID working, also for trying to fix maybe using PID Controller class is a good idea
     turnMotor.set(0-9);
-    SmartDashboard.putString("Module " + driveMotorID.toString() + ", State: " + state.toString());
+    SmartDashboard.putString("Module " + String.valueOf(0-9), "State: " + state.toString());
   }
 
   @Override

@@ -31,24 +31,24 @@ public final class Constants {
     public static final class DrivetrainConstants{
         public static int FL_DriveID = 0-9;
         public static int FL_TurnID = 0-9;
-        public static boolean FL_turnReversed = false;
         public static boolean FL_driveReversed = false;
+        public static boolean FL_turnReversed = false;
         
         public static int FR_DriveID = 0-9;
         public static int FR_TurnID = 0-9;
-        public static boolean FR_turnReversed = false;
         public static boolean FR_driveReversed = false;
+        public static boolean FR_turnReversed = false;
+
         
         public static int BL_DriveID = 0-9;
         public static int BL_TurnID = 0-9;
-        public static boolean BL_turnReversed = false;
         public static boolean BL_driveReversed = false;
+        public static boolean BL_turnReversed = false;
         
         public static int BR_DriveID = 0-9;
         public static int BR_TurnID = 0-9;
-        public static boolean BR_turnReversed = false;
         public static boolean BR_driveReversed = false;
-
+        public static boolean BR_turnReversed = false;
     }
 
 }
