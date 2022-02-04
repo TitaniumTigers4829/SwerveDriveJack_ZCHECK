@@ -7,11 +7,12 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.geometry.Translation2d;
+import edu.wpi.first.wpilibj.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.wpilibj.util.Units;
 
 public final class Constants {
-
-    public static final class ModuleConstants{
+    public static final class ModuleConstants {
         public static double wheelDiameter = Units.inchesToMeters(4);
         public static double driveMotorToWheel = 1 / 7.13;
         public static double turningMotorWheelRatio = 1;
@@ -28,7 +29,16 @@ public final class Constants {
         public static double ticksToMeters = Math.PI / 512;
     }
 
-    public static final class DrivetrainConstants{
+    public static final class DrivetrainConstants {
+        public static double wheelBase = Units.inchesToMeters(16 + (5/16)); // front and back wheels are slightly further apart than right and left
+        public static double trackWidth = Units.inchesToMeters(16.125);
+
+        public static final SwerveDriveKinematics driveKinematics = new SwerveDriveKinematics(
+            new Translation2d(wheelBase / 2, -trackWidth / 2),
+            new Translation2d(wheelBase / 2, trackWidth / 2),
+            new Translation2d(-wheelBase / 2, -trackWidth / 2),
+            new Translation2d(-wheelBase / 2, trackWidth / 2));
+
         public static int FL_DriveID = 0-9;
         public static int FL_TurnID = 0-9;
         public static boolean FL_driveReversed = false;
@@ -49,6 +59,11 @@ public final class Constants {
         public static int BR_TurnID = 0-9;
         public static boolean BR_driveReversed = false;
         public static boolean BR_turnReversed = false;
+    }
+
+    public static final class JoyStickConstants {
+        public static int joyStickPort = 0;
+        public static double deadzone = 0.01;
     }
 
 }

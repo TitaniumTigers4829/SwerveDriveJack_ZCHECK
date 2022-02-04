@@ -46,24 +46,23 @@ public class SwerveSubsystem extends SubsystemBase {
     DrivetrainConstants.BR_turnReversed
   );
 
+    /** Creates a new SwerveSubsystem. */
+    public SwerveSubsystem() {
+      // Makes a separate thread to wait for gyro to boot up before zeroing it
+      new Thread(() -> {
+        try {
+          Thread.sleep(2000);
+          zeroGyro();
+        } catch (Exception e) {
+        }
+      }).start();
+    }
+
   // Sets up gyro to tell which direction the robot is facing
-  // TODO: Explain each part
   private AHRS gyro = new AHRS(SPI.Port.kMXP);
 
   public void zeroGyro() {
         gyro.reset();
-  }
-
-  /** Creates a new SwerveSubsystem. */
-  public SwerveSubsystem() {
-    // Makes a separate thread to wait for gyro to boot up before zeroing it
-    new Thread(() -> {
-      try {
-        Thread.sleep(2000);
-        zeroGyro();
-      } catch (Exception e) {
-      }
-    }).start();
   }
 
   public double getGyroPositionInRadians() {
