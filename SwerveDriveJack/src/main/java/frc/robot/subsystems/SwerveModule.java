@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
@@ -19,9 +20,12 @@ public class SwerveModule extends SubsystemBase {
 
   private final WPI_TalonFX driveMotor;
   private final WPI_TalonSRX turnMotor;
+  private final int moduleNumber;
 
   /** Creates a new SwerveModule. */
-  public SwerveModule(int driveMotorID, int turnMotorID, boolean driveMotorReversed, boolean turnMotorReversed) {
+  public SwerveModule(int driveMotorID, int turnMotorID, boolean driveMotorReversed, boolean turnMotorReversed, int moduleNumber) {
+
+    this.moduleNumber = moduleNumber;
 
     // Making the motor objects
     driveMotor = new WPI_TalonFX(driveMotorID);
@@ -75,8 +79,8 @@ public class SwerveModule extends SubsystemBase {
   }
 
   public void stopModule() {
-    driveMotor.set(0);
-    turnMotor.set(0);
+    driveMotor.set(ControlMode.PercentOutput, 0);
+    turnMotor.set(ControlMode.PercentOutput, 0);
   }
 
   public void setDesiredState(SwerveModuleState state) {
@@ -87,10 +91,10 @@ public class SwerveModule extends SubsystemBase {
     // Optimizes angle so the wheel won't ever have to move more than 90 degrees
     state = SwerveModuleState.optimize(state, getState().angle);
     // Sets the drive motor's speed from 0.0 to 1.0
-    driveMotor.set(state.speedMetersPerSecond / ModuleConstants.physicalMaxSpeedMetersPerSecond);
+    driveMotor.set(ControlMode.PercentOutput, state.speedMetersPerSecond / ModuleConstants.physicalMaxSpeedMetersPerSecond);
     // TODO: ask how to get the built in PID working, also for trying to fix maybe using PID Controller class is a good idea
-    turnMotor.set(0-9);
-    SmartDashboard.putString("Module " + String.valueOf(0-9), "State: " + state.toString());
+    turnMotor.set(ControlMode.MotionMagic, state.angle.getDegrees() * 64/17);
+    SmartDashboard.putString("Module " + String.valueOf(moduleNumber), "State: " + state.toString());
   }
 
   @Override

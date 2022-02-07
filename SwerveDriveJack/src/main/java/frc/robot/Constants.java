@@ -21,7 +21,7 @@ public final class Constants {
         public static double turnEncRotToRad = turningMotorWheelRatio * 2 * Math.PI;
         public static double driveEncRPMToMPS = driveEncToMeters_s / 60;
         public static double turningEncRPMToRadPerS = turnEncRotToRad / 60;
-        public static double kP = 0.5;
+        public static double kP = 1.0;
         public static double kI = 0.0;
         public static double kD = 0.0;
         public static double wheelSpinUnitsToMetersPerSecond = 10 / 2048;
@@ -39,24 +39,24 @@ public final class Constants {
             new Translation2d(-wheelBase / 2, -trackWidth / 2),
             new Translation2d(-wheelBase / 2, trackWidth / 2));
 
-        public static int FL_DriveID = 0-9;
-        public static int FL_TurnID = 0-9;
+        public static int FL_DriveID = 2;
+        public static int FL_TurnID = 12;
         public static boolean FL_driveReversed = false;
         public static boolean FL_turnReversed = false;
         
-        public static int FR_DriveID = 0-9;
-        public static int FR_TurnID = 0-9;
+        public static int FR_DriveID = 13;
+        public static int FR_TurnID = 3;
         public static boolean FR_driveReversed = false;
         public static boolean FR_turnReversed = false;
 
         
-        public static int BL_DriveID = 0-9;
-        public static int BL_TurnID = 0-9;
+        public static int BL_DriveID = 14;
+        public static int BL_TurnID = 15;
         public static boolean BL_driveReversed = false;
         public static boolean BL_turnReversed = false;
         
-        public static int BR_DriveID = 0-9;
-        public static int BR_TurnID = 0-9;
+        public static int BR_DriveID = 1;
+        public static int BR_TurnID = 0;
         public static boolean BR_driveReversed = false;
         public static boolean BR_turnReversed = false;
     }

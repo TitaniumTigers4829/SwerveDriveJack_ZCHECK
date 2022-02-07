@@ -39,7 +39,8 @@ public class RobotContainer {
       () -> -driverJoystick.getRawAxis(1),
       () -> driverJoystick.getRawAxis(0),
       () -> driverJoystick.getRawAxis(2),
-      () -> !driverJoystick.getRawButton(2)));
+      // Add ! to turn on field relative
+      () -> driverJoystick.getRawButton(2)));
     configureButtonBindings();
   }
 
@@ -61,6 +62,5 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     return null;
   }
-
 
 }

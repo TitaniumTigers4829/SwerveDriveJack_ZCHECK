@@ -22,28 +22,32 @@ public class SwerveSubsystem extends SubsystemBase {
     DrivetrainConstants.FL_DriveID,
     DrivetrainConstants.FL_TurnID,
     DrivetrainConstants.FL_driveReversed,
-    DrivetrainConstants.FL_turnReversed
+    DrivetrainConstants.FL_turnReversed,
+    0
   );
 
   private final SwerveModule frontRightModule = new SwerveModule(
     DrivetrainConstants.FR_DriveID,
     DrivetrainConstants.FR_TurnID,
     DrivetrainConstants.FR_driveReversed,
-    DrivetrainConstants.FR_turnReversed
+    DrivetrainConstants.FR_turnReversed,
+    1
   );
 
   private final SwerveModule backLeftModule = new SwerveModule(
     DrivetrainConstants.BL_DriveID,
     DrivetrainConstants.BL_TurnID,
     DrivetrainConstants.BL_driveReversed,
-    DrivetrainConstants.BL_turnReversed
+    DrivetrainConstants.BL_turnReversed,
+    2
   );
 
   private final SwerveModule backRightModule = new SwerveModule(
     DrivetrainConstants.BR_DriveID,
     DrivetrainConstants.BR_TurnID,
     DrivetrainConstants.BR_driveReversed,
-    DrivetrainConstants.BR_turnReversed
+    DrivetrainConstants.BR_turnReversed,
+    3
   );
 
     /** Creates a new SwerveSubsystem. */
