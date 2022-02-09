@@ -8,7 +8,9 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.ctre.phoenix.sensors.CANCoder;
 
+import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -22,8 +24,12 @@ public class SwerveModule extends SubsystemBase {
   private final WPI_TalonSRX turnMotor;
   private final int moduleNumber;
 
+  private final CANCoder turnEncoder;
+
+  private final PIDController turnPidController;
+
   /** Creates a new SwerveModule. */
-  public SwerveModule(int driveMotorID, int turnMotorID, boolean driveMotorReversed, boolean turnMotorReversed, int moduleNumber) {
+  public SwerveModule(int driveMotorID, int turnMotorID, int canCoderID, boolean driveMotorReversed, boolean turnMotorReversed, int moduleNumber) {
 
     this.moduleNumber = moduleNumber;
 
@@ -37,15 +43,13 @@ public class SwerveModule extends SubsystemBase {
 
     // Setting up the encoders
     driveMotor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
-    turnMotor.configSelectedFeedbackSensor(FeedbackDevice.Analog);
+    this.turnEncoder = new CANCoder(canCoderID);
 
     // Setting up PID for turnMoter
-    turnMotor.config_kP(0, ModuleConstants.kP);
-    turnMotor.config_kI(0, ModuleConstants.kI);
-    turnMotor.config_kD(0, ModuleConstants.kD);
+    turnPidController = new PIDController(ModuleConstants.kP, ModuleConstants.kI, ModuleConstants.kD);
+    turnPidController.enableContinuousInput(-Math.PI, Math.PI);
 
-    // TODO: Setup Absolute Encoder stuff to straighten wheels when robot boots up
-
+    resetEncoders();
   }
 
   /**
@@ -62,7 +66,6 @@ public class SwerveModule extends SubsystemBase {
     return (turnMotor.getSelectedSensorVelocity()) * ModuleConstants.ticksToRadians;
   }
 
-  // TODO: Check if this works
   /**
    * Gets the velocity in Meters per second of the current drive motor
    */
@@ -83,6 +86,12 @@ public class SwerveModule extends SubsystemBase {
     turnMotor.set(ControlMode.PercentOutput, 0);
   }
 
+  // TODO: Get absolute encoders set up later
+  public void resetEncoders() {
+    driveMotor.setSelectedSensorPosition(0);
+    turnEncoder.setPosition(0);
+}
+
   public void setDesiredState(SwerveModuleState state) {
     if (Math.abs(state.speedMetersPerSecond) < 0.005) {
       stopModule();
@@ -92,8 +101,8 @@ public class SwerveModule extends SubsystemBase {
     state = SwerveModuleState.optimize(state, getState().angle);
     // Sets the drive motor's speed from 0.0 to 1.0
     driveMotor.set(ControlMode.PercentOutput, state.speedMetersPerSecond / ModuleConstants.physicalMaxSpeedMetersPerSecond);
-    // TODO: ask how to get the built in PID working, also for trying to fix maybe using PID Controller class is a good idea
-    turnMotor.set(ControlMode.MotionMagic, state.angle.getDegrees() * 64/17);
+    // TODO: Add Motion Magic back
+    turnMotor.set(turnPidController.calculate(turnEncoder.getPosition(), state.angle.getRadians()));
     SmartDashboard.putString("Module " + String.valueOf(moduleNumber), "State: " + state.toString());
   }
 
