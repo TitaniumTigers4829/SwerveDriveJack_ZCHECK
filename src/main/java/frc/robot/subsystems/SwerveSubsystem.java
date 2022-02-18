@@ -62,12 +62,14 @@ public class SwerveSubsystem extends SubsystemBase {
           Thread.sleep(2000);
           zeroGyro();
         } catch (Exception e) {
+          throw new RuntimeException("Something went wrong while trying to zero the gyro.");
         }
       }).start();
+      // Prateek says that this is unnecessary, because the code takes 30 seconds to load anyway.
     }
 
   // Sets up gyro to tell which direction the robot is facing
-  private AHRS gyro = new AHRS(SPI.Port.kMXP);
+  private final AHRS gyro = new AHRS(SPI.Port.kMXP);
 
   public void zeroGyro() {
         gyro.reset();
@@ -82,14 +84,14 @@ public class SwerveSubsystem extends SubsystemBase {
   }
 
   // Stops the movement of the swerve drive
-  public void stopModules() {
+  public void stopAllModules() {
     frontLeftModule.stopModule();
     frontRightModule.stopModule();
     backLeftModule.stopModule();
     backRightModule.stopModule();
   }
 
-  // ITS A LIST U NERD
+  // IT'S A LIST U NERD
   public void setModuleStates(SwerveModuleState[] desiredStates) {
     // Makes it so the swerve drive can still turn even when all the wheels are being told to go to max speed
     SwerveDriveKinematics.desaturateWheelSpeeds(desiredStates, ModuleConstants.physicalMaxSpeedMetersPerSecond);

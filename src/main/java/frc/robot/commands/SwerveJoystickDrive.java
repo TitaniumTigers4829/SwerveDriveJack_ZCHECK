@@ -4,17 +4,15 @@
 
 package frc.robot.commands;
 
-import java.util.function.Supplier;
-
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.SwerveSubsystem;
-import frc.robot.Constants;
 import frc.robot.Constants.DrivetrainConstants;
 import frc.robot.Constants.JoyStickConstants;
+import frc.robot.subsystems.SwerveSubsystem;
+import java.util.function.Supplier;
 
-public class SwerveJoyStickDrive extends CommandBase {
+public class SwerveJoystickDrive extends CommandBase {
 
   public final SwerveSubsystem swerveSubsystem;
   public final Supplier<Double> xSpdFunc, ySpdFunc, turnSpdFunc;
@@ -22,24 +20,33 @@ public class SwerveJoyStickDrive extends CommandBase {
 
   // private final SlewRateLimiter xLimiter, yLimiter, turningLimiter;
 
-  /** Creates a new SwerveJoyStickDrive. */
-  public SwerveJoyStickDrive(SwerveSubsystem swerveSubsystem, 
-  Supplier<Double> xSpdFunc, Supplier<Double> ySpdFunc, Supplier<Double> turnSpdFunc, Supplier<Boolean> fieldOrientedFunc) {
-    // Use addRequirements() here to declare subsystem dependencies.
+  /**
+   * Creates a new SwerveJoystickDrive.
+   */
+  public SwerveJoystickDrive(SwerveSubsystem swerveSubsystem,
+      Supplier<Double> xSpdFunc, Supplier<Double> ySpdFunc, Supplier<Double> turnSpdFunc,
+      Supplier<Boolean> fieldOrientedFunc) {
     this.swerveSubsystem = swerveSubsystem;
     this.xSpdFunc = xSpdFunc;
     this.ySpdFunc = ySpdFunc;
     this.turnSpdFunc = turnSpdFunc;
     this.fieldOrientedFunc = fieldOrientedFunc;
+
+    // Implements a max rate of change of 'input' data coming form joysticks. Good for preventing
+    // robot tipping, etc. However, if the drivers are good it can be left off.
+
     // this.xLimiter = new SlewRateLimiter(DriveConstants.kTeleDriveMaxAccelerationUnitsPerSecond);
     // this.yLimiter = new SlewRateLimiter(DriveConstants.kTeleDriveMaxAccelerationUnitsPerSecond);
     // this.turningLimiter = new SlewRateLimiter(DriveConstants.kTeleDriveMaxAngularAccelerationUnitsPerSecond);
+
+    // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(swerveSubsystem);
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
@@ -62,12 +69,13 @@ public class SwerveJoyStickDrive extends CommandBase {
     // Allows the robot to drive relative to the field rather than relative to the direction its facing
     if (fieldOrientedFunc.get()) {
       chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(
-        xSpd, ySpd, turnSpd, swerveSubsystem.getRotation2d());
+          xSpd, ySpd, turnSpd, swerveSubsystem.getRotation2d());
     } else {
       chassisSpeeds = new ChassisSpeeds(xSpd, ySpd, turnSpd);
     }
 
-    SwerveModuleState[] moduleStates = DrivetrainConstants.driveKinematics.toSwerveModuleStates(chassisSpeeds);
+    SwerveModuleState[] moduleStates = DrivetrainConstants.driveKinematics.toSwerveModuleStates(
+        chassisSpeeds);
 
     swerveSubsystem.setModuleStates(moduleStates);
 
@@ -76,10 +84,10 @@ public class SwerveJoyStickDrive extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    swerveSubsystem.stopModules();
+    swerveSubsystem.stopAllModules();
   }
 
-  // Returns true when the command should end.
+  // Returns true when the command should end. (In this case never, because it's the drive train).
   @Override
   public boolean isFinished() {
     return false;

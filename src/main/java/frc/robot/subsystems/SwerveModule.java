@@ -104,12 +104,15 @@ public class SwerveModule extends SubsystemBase {
     // TODO: Add Motion Magic back
     turnMotor.set(turnPidController.calculate(turnEncoder.getPosition(), state.angle.getRadians()));
     SmartDashboard.putString("Module " + String.valueOf(moduleNumber), "State: " + state.toString());
+    // intelliJ says that String.valueOf() and .toString() are unnecessary. but I don't know how
+    // that works with smart dashboard.
   }
 
   @Override
   public void periodic() {
 
     // TODO: Ask for examples of what goes in here
+    // Prateek says he doesn't think so.
 
     // This method will be called once per scheduler run
   }
