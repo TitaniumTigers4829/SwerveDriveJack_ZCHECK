@@ -10,7 +10,6 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.sensors.CANCoder;
 
-import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -110,16 +109,16 @@ public class SwerveModule extends SubsystemBase {
     int ratio = (ticksPerDeg / 360);
     turnMotor.set(ControlMode.MotionMagic, state.angle.getDegrees() * ratio);
     SmartDashboard.putNumber("Module " + moduleNumber + " angle", state.angle.getDegrees());
-    // intelliJ says that String.valueOf() and .toString() are unnecessary. but I don't know how
-    // that works with smart dashboard.
   }
 
   @Override
   public void periodic() {
 
     // TODO: Ask for examples of what goes in here
+    // Z--- This is where we put debug commands like encoder values
     // Prateek says he doesn't think so.
 
-    // This method will be called once per scheduler run
+    SmartDashboard.putNumber("Module " + moduleNumber + " cancoder", turnEncoder.getPosition());
+    SmartDashboard.putNumber("Module " + moduleNumber + " cancoder", turnMotor.getSelectedSensorPosition());
   }
 }
