@@ -56,7 +56,7 @@ public class SwerveJoystickDrive extends CommandBase {
     double ySpd = ySpdFunc.get();
     double turnSpd = turnSpdFunc.get();
 
-    // Adds a deadzone to the joystics
+    // Adds a deadzone to the joysticks
     xSpd = Math.abs(xSpd) > JoyStickConstants.deadzone ? xSpd : 0;
     ySpd = Math.abs(ySpd) > JoyStickConstants.deadzone ? ySpd : 0;
 
