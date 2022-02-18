@@ -26,7 +26,6 @@ public class SwerveModule extends SubsystemBase {
 
   private final CANCoder turnEncoder;
 
-  private final PIDController turnPidController;
 
   /** Creates a new SwerveModule. */
   public SwerveModule(int driveMotorID, int turnMotorID, int canCoderID, boolean driveMotorReversed, boolean turnMotorReversed, int moduleNumber) {
@@ -41,13 +40,11 @@ public class SwerveModule extends SubsystemBase {
     driveMotor.setInverted(driveMotorReversed);
     turnMotor.setInverted(turnMotorReversed);
 
+    turnMotor.config_kP(0, 1.0);
+
     // Setting up the encoders
     driveMotor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
     this.turnEncoder = new CANCoder(canCoderID);
-
-    // Setting up PID for turnMoter
-    turnPidController = new PIDController(ModuleConstants.kP, ModuleConstants.kI, ModuleConstants.kD);
-    turnPidController.enableContinuousInput(-Math.PI, Math.PI);
 
     resetEncoders();
   }
@@ -86,7 +83,6 @@ public class SwerveModule extends SubsystemBase {
     turnMotor.set(ControlMode.PercentOutput, 0);
   }
 
-  // TODO: Get absolute encoders set up later
   public void resetEncoders() {
     driveMotor.setSelectedSensorPosition(0);
     turnEncoder.setPosition(0);
@@ -101,9 +97,19 @@ public class SwerveModule extends SubsystemBase {
     state = SwerveModuleState.optimize(state, getState().angle);
     // Sets the drive motor's speed from 0.0 to 1.0
     driveMotor.set(ControlMode.PercentOutput, state.speedMetersPerSecond / ModuleConstants.physicalMaxSpeedMetersPerSecond);
-    // TODO: Add Motion Magic back
-    turnMotor.set(turnPidController.calculate(turnEncoder.getPosition(), state.angle.getRadians()));
-    SmartDashboard.putString("Module " + String.valueOf(moduleNumber), "State: " + state.toString());
+    // turnEncoder = cancoder in degrees
+    // state.angle.getDegrees is also in degrees
+    // talon fx has 2048 ticks/rotation
+    // if mult by cancoder deg by (ticksPerRot/degPerRot) -> 
+    // cancoder DEG     ticksPerRot     ticks
+    // ------------  x  ----------- --> ------
+    //       1          degPerRot          1
+    // ticksPerRot = 2048
+    // degPerRot = 360
+    int ticksPerDeg = 2048;
+    int ratio = (ticksPerDeg / 360);
+    turnMotor.set(ControlMode.MotionMagic, state.angle.getDegrees() * ratio);
+    SmartDashboard.putNumber("Module " + moduleNumber + " angle", state.angle.getDegrees());
     // intelliJ says that String.valueOf() and .toString() are unnecessary. but I don't know how
     // that works with smart dashboard.
   }
