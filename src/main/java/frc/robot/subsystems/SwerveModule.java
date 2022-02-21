@@ -5,7 +5,6 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.sensors.CANCoder;
@@ -16,34 +15,22 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import frc.robot.Constants.ModuleConstants;
+import frc.robot.subsystems.MotorPair;
 
 public class SwerveModule extends SubsystemBase {
 
+  private final MotorPair pair;
   private final WPI_TalonFX driveMotor;
-  private final WPI_TalonSRX turnMotor;
   private final int moduleNumber;
-
-  private final CANCoder turnEncoder;
-
 
   /** Creates a new SwerveModule. */
   public SwerveModule(int driveMotorID, int turnMotorID, int canCoderID, boolean driveMotorReversed, boolean turnMotorReversed, int moduleNumber) {
 
     this.moduleNumber = moduleNumber;
 
-    // Making the motor objects
+    pair = new MotorPair(turnMotorID, canCoderID, turnMotorReversed, moduleNumber);
+
     driveMotor = new WPI_TalonFX(driveMotorID);
-    turnMotor = new WPI_TalonSRX(turnMotorID);
-
-    // Reversing them if necessary
-    driveMotor.setInverted(driveMotorReversed);
-    turnMotor.setInverted(turnMotorReversed);
-
-    turnMotor.config_kP(0, 1.0);
-
-    // Setting up the encoders
-    driveMotor.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
-    this.turnEncoder = new CANCoder(canCoderID);
 
     resetEncoders();
   }
@@ -52,15 +39,15 @@ public class SwerveModule extends SubsystemBase {
    * Gets the angle in Radians of the current turn motor
    */
   public double getTurnAngle() {
-    return (turnMotor.getSelectedSensorPosition() % 1024) * ModuleConstants.ticksToRadians;
+    return pair.getPosition();
   }
 
-  /**
-   * Gets the velocity in Radians per second for the current turn motor
-   */
-  public double getTurnVelocity() {
-    return (turnMotor.getSelectedSensorVelocity()) * ModuleConstants.ticksToRadians;
-  }
+  // /**
+  //  * Gets the velocity in Radians per second for the current turn motor
+  //  */
+  // public double getTurnVelocity() {
+  //   return (turnMotor.getSelectedSensorVelocity()) * ModuleConstants.ticksToRadians;
+  // }
 
   /**
    * Gets the velocity in Meters per second of the current drive motor
@@ -70,7 +57,8 @@ public class SwerveModule extends SubsystemBase {
     // next it divides it by ticks and motor shaft units to get the rps,
     // next it multiplies that by the circumference of the wheel to get inches per second
     // finally it converts it to meters per second
-    return ((((turnMotor.getSelectedSensorVelocity()) * 10) / (2048 * 7.13) ) * 4 * Math.PI * 0.0254);
+    // this was turn motor -- fixed it
+    return ((((driveMotor.getSelectedSensorVelocity()) * 10) / (2048 * 7.13) ) * 4 * Math.PI * 0.0254);
   }
 
   public SwerveModuleState getState() {
@@ -79,12 +67,12 @@ public class SwerveModule extends SubsystemBase {
 
   public void stopModule() {
     driveMotor.set(ControlMode.PercentOutput, 0);
-    turnMotor.set(ControlMode.PercentOutput, 0);
+    pair.set(ControlMode.PercentOutput, 0);
   }
 
   public void resetEncoders() {
     driveMotor.setSelectedSensorPosition(0);
-    turnEncoder.setPosition(0);
+    pair.setPos(0);
 }
 
   public void setDesiredState(SwerveModuleState state) {
@@ -105,9 +93,9 @@ public class SwerveModule extends SubsystemBase {
     //       1          degPerRot          1
     // ticksPerRot = 2048
     // degPerRot = 360
-    int ticksPerDeg = 2048;
-    int ratio = (ticksPerDeg / 360);
-    turnMotor.set(ControlMode.MotionMagic, state.angle.getDegrees() * ratio);
+    // int ticksPerDeg = 2048;
+    // int ratio = (ticksPerDeg / 360);
+    pair.turnTo(state.angle.getDegrees());
     SmartDashboard.putNumber("Module " + moduleNumber + " angle", state.angle.getDegrees());
   }
 
@@ -117,8 +105,6 @@ public class SwerveModule extends SubsystemBase {
     // TODO: Ask for examples of what goes in here
     // Z--- This is where we put debug commands like encoder values
     // Prateek says he doesn't think so.
-
-    SmartDashboard.putNumber("Module " + moduleNumber + " cancoder", turnEncoder.getPosition());
-    SmartDashboard.putNumber("Module " + moduleNumber + " cancoder", turnMotor.getSelectedSensorPosition());
+    pair.debugToDashboard();
   }
 }
