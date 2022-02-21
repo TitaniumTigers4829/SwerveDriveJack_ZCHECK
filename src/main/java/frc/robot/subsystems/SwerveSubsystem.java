@@ -55,8 +55,7 @@ public class SwerveSubsystem extends SubsystemBase {
   );
 
     /** Creates a new E meme. */
-    public SwerveSubsystem() {
-    }
+    public SwerveSubsystem() {}
 
   // Sets up gyro to tell which direction the robot is facing
   private final AHRS gyro = new AHRS(SPI.Port.kMXP);

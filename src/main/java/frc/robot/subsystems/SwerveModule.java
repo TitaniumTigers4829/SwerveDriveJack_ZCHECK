@@ -6,8 +6,6 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-import com.ctre.phoenix.sensors.CANCoder;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
@@ -15,7 +13,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import frc.robot.Constants.ModuleConstants;
-import frc.robot.subsystems.MotorPair;
 
 public class SwerveModule extends SubsystemBase {
 
