@@ -34,7 +34,7 @@ public class MotorPair {
     }
 /**
  * Turns the module to the specified degree
- * @param degree
+ * @param degree the degree to turn to
  */
     public void turnTo(double degree){
         double currentDeg = (isInverted ? -coder.getPosition() : coder.getPosition());
@@ -44,10 +44,10 @@ public class MotorPair {
         }
         else{
           if (currentDeg > degree){
-            motor.set(ControlMode.PercentOutput, 0.1);
+            motor.set(ControlMode.PercentOutput, isInverted ? -0.1 : 0.1);
           }
           else{
-            motor.set(ControlMode.PercentOutput, -0.1);
+            motor.set(ControlMode.PercentOutput, isInverted ? 0.1 : -0.1);
           }
         }
     }

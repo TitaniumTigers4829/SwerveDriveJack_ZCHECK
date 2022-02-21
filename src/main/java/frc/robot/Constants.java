@@ -42,7 +42,7 @@ public final class Constants {
         
         public static int FL_DriveID = 2;
         public static int FL_TurnID = 1;
-        public static int FL_CancoderID = 9;
+        public static int FL_CancoderID = 11;
         // ALIGN THE WHEELS WITH THE GEARS FACING OUT!!!
         public static boolean FL_driveReversed = true;
         public static boolean FL_turnReversed = false;
@@ -61,7 +61,7 @@ public final class Constants {
         
         public static int BR_DriveID = 0;
         public static int BR_TurnID = 5;
-        public static int BR_CancoderID = 11;
+        public static int BR_CancoderID = 9;
         public static boolean BR_driveReversed = false;
         public static boolean BR_turnReversed = false;
     }

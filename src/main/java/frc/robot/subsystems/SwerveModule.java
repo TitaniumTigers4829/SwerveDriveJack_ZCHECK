@@ -99,21 +99,13 @@ public class SwerveModule extends SubsystemBase {
     state = SwerveModuleState.optimize(state, new Rotation2d((pair.getPosition() * (Math.PI / 180))));
     // Sets the drive motor's speed from 0.0 to 1.0
     driveMotor.set(ControlMode.PercentOutput, state.speedMetersPerSecond / ModuleConstants.physicalMaxSpeedMetersPerSecond);
-    // turnEncoder = cancoder in degrees
-    // state.angle.getDegrees is also in degrees
-    // talon fx has 2048 ticks/rotation
-    // if mult by cancoder deg by (ticksPerRot/degPerRot) -> 
-    // cancoder DEG     ticksPerRot     ticks
-    // ------------  x  ----------- --> ------
-    //       1          degPerRot          1
-    // ticksPerRot = 2048
-    // degPerRot = 360
-    // int ticksPerDeg = 2048;
-    // int ratio = (ticksPerDeg / 360);
+    // funcky function w/o PID to turn
     pair.turnTo(state.angle.getDegrees());
     SmartDashboard.putNumber("Module " + moduleNumber + " angle", state.angle.getDegrees());
   }
-
+/**
+ * hehe nErDs go BRRRBRRRRR
+ */
   @Override
   public void periodic() {
     // TODO: stop being nerds
