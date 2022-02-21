@@ -16,13 +16,6 @@ import frc.robot.Constants.JoyStickConstants;
 import frc.robot.commands.SwerveJoystickDrive;
 import frc.robot.subsystems.SwerveSubsystem;
 
-/**
- * This class is where the bulk of the robot should be declared. Since
- * Command-based is a "declarative" paradigm, very little robot logic should
- * actually be handled in the {@link Robot} periodic methods (other than the
- * scheduler calls). Instead, the structure of the robot (including subsystems,
- * commands, and button mappings) should be declared here.
- */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here
   //SendableChooser<Command> chooser = new SendableChooser<>();
@@ -31,9 +24,10 @@ public class RobotContainer {
 
   private final Joystick driverJoystick = new Joystick(JoyStickConstants.joyStickPort);
 
-  /**
-   * The container for the robot. Contains subsystems, OI devices, and commands.
-   */
+/**
+ * Meme supplies:
+ *            Memes
+ */
   public RobotContainer() {
     swerveSubsystem = new SwerveSubsystem();
     swerveSubsystem.setDefaultCommand(new SwerveJoystickDrive(

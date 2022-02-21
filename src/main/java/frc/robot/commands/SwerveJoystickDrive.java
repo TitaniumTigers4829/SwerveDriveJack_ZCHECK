@@ -21,7 +21,12 @@ public class SwerveJoystickDrive extends CommandBase {
   // private final SlewRateLimiter xLimiter, yLimiter, turningLimiter;
 
   /**
-   * Creates a new SwerveJoystickDrive.
+   * Creates the drive command
+   * @param swerveSubsystem instance of the SwerveSubsytem
+   * @param xSpdFunc X speed
+   * @param ySpdFunc Y speed
+   * @param turnSpdFunc Turn speed
+   * @param fieldOrientedFunc is field oriented
    */
   public SwerveJoystickDrive(SwerveSubsystem swerveSubsystem,
       Supplier<Double> xSpdFunc, Supplier<Double> ySpdFunc, Supplier<Double> turnSpdFunc,

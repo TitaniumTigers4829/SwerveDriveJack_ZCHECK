@@ -60,10 +60,17 @@ public class SwerveSubsystem extends SubsystemBase {
   // Sets up gyro to tell which direction the robot is facing
   private final AHRS gyro = new AHRS(SPI.Port.kMXP);
 
+  /**
+   * Zeroes the gyro
+   */
   public void zeroGyro() {
         gyro.reset();
   }
 
+  /**
+   * Gets the gyro pos in radians
+   * @return radians of the gyro what did you think :)
+   */
   public double getGyroPositionInRadians() {
     return Math.IEEEremainder(Math.toRadians(gyro.getAngle()), 2 * Math.PI);
   }
@@ -72,7 +79,9 @@ public class SwerveSubsystem extends SubsystemBase {
     return Rotation2d.fromDegrees(Math.IEEEremainder(gyro.getAngle(), 360));
   }
 
-  // Stops the movement of the swerve drive
+  /** 
+   * Stops the movement of the swerve drive
+   */
   public void stopAllModules() {
     frontLeftModule.stopModule();
     frontRightModule.stopModule();
@@ -81,6 +90,10 @@ public class SwerveSubsystem extends SubsystemBase {
   }
 
   // IT'S A LIST U NERD
+  /**
+   * Sets the states of all the modules
+   * @param desiredStates nerds
+   */
   public void setModuleStates(SwerveModuleState[] desiredStates) {
     // Makes it so the swerve drive can still turn even when all the wheels are being told to go to max speed
     SwerveDriveKinematics.desaturateWheelSpeeds(desiredStates, ModuleConstants.physicalMaxSpeedMetersPerSecond);

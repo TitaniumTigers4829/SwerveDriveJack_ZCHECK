@@ -65,16 +65,23 @@ public class SwerveModule extends SubsystemBase {
     // this was turn motor -- fixed it
     return ((((driveMotor.getSelectedSensorVelocity()) * 10) / (2048 * 7.13) ) * 4 * Math.PI * 0.0254);
   }
-
+/**
+ * getState() returns the current state of the module
+ * @return the state of the module
+ */
   public SwerveModuleState getState() {
     return new SwerveModuleState(getDriveVelocity(), new Rotation2d(getTurnAngle()));
   }
-
+/**
+ * Completely stops the module
+ */
   public void stopModule() {
     driveMotor.set(ControlMode.PercentOutput, 0);
     pair.set(ControlMode.PercentOutput, 0);
   }
-
+/**
+ * Resets the encoders
+ */
   public void resetEncoders() {
     driveMotor.setSelectedSensorPosition(0);
     pair.setPos(0);
@@ -109,10 +116,7 @@ public class SwerveModule extends SubsystemBase {
 
   @Override
   public void periodic() {
-
-    // TODO: Ask for examples of what goes in here
-    // Z--- This is where we put debug commands like encoder values
-    // Prateek says he doesn't think so.
+    // TODO: stop being nerds
     pair.debugToDashboard();
   }
 }
