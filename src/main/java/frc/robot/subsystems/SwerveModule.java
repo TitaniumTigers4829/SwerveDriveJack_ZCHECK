@@ -20,7 +20,15 @@ public class SwerveModule extends SubsystemBase {
   private final WPI_TalonFX driveMotor;
   private final int moduleNumber;
 
-  /** Creates a new SwerveModule. */
+  /**
+   * Creates a new Swerve Module
+   * @param driveMotorID ID of the drive motor
+   * @param turnMotorID ID of the turn
+   * @param canCoderID ID of the cancoder
+   * @param driveMotorReversed is the drive motor reversed
+   * @param turnMotorReversed is the turn motor reversed
+   * @param moduleNumber number of the module
+   */
   public SwerveModule(int driveMotorID, int turnMotorID, int canCoderID, boolean driveMotorReversed, boolean turnMotorReversed, int moduleNumber) {
 
     this.moduleNumber = moduleNumber;
@@ -71,14 +79,17 @@ public class SwerveModule extends SubsystemBase {
     driveMotor.setSelectedSensorPosition(0);
     pair.setPos(0);
 }
-
+/**
+ * Set the desired state of the module
+ * @param state desired state
+ */
   public void setDesiredState(SwerveModuleState state) {
     if (Math.abs(state.speedMetersPerSecond) < 0.005) {
       stopModule();
       return;
     }
     // Optimizes angle so the wheel won't ever have to move more than 90 degrees
-    state = SwerveModuleState.optimize(state, getState().angle);
+    state = SwerveModuleState.optimize(state, new Rotation2d((pair.getPosition() * (Math.PI / 180))));
     // Sets the drive motor's speed from 0.0 to 1.0
     driveMotor.set(ControlMode.PercentOutput, state.speedMetersPerSecond / ModuleConstants.physicalMaxSpeedMetersPerSecond);
     // turnEncoder = cancoder in degrees
