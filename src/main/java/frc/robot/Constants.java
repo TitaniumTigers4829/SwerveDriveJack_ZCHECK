@@ -40,7 +40,7 @@ public final class Constants {
         new Translation2d(-wheelBase / 2, trackWidth / 2));
         
         
-        public static int FL_DriveID = 2;
+        public static int FL_DriveID = 13;
         public static int FL_TurnID = 1;
         public static int FL_CancoderID = 11;
         // ALIGN THE WHEELS WITH THE GEARS FACING OUT!!!
@@ -60,7 +60,7 @@ public final class Constants {
         public static boolean BL_turnReversed = false;
         
         public static int BR_DriveID = 0;
-        public static int BR_TurnID = 5;
+        public static int BR_TurnID = 12;
         public static int BR_CancoderID = 9;
         public static boolean BR_driveReversed = false;
         public static boolean BR_turnReversed = false;

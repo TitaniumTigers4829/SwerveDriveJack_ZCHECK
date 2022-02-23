@@ -14,7 +14,7 @@ public class MotorPair {
     private WPI_TalonFX motor;
     private CANCoder coder;
     private int number;
-    private boolean isInverted;
+    boolean isInverted;
     /**
      * Creates a new MotorPair object
      * @param motorID ID of the Talon FX
@@ -23,33 +23,38 @@ public class MotorPair {
      * @param num the number of the module
      */
     public MotorPair(int motorID, int coderID, boolean motorReversed, int num){
-        this.motor = new WPI_TalonFX(motorID);
-        this.motor.setInverted(motorReversed);
+        motor = new WPI_TalonFX(motorID);
+        motor.setInverted(motorReversed);
+        motor.config_kP(0, 0.2);
+        motor.config_kI(0, 0);
+        motor.config_kD(0, 0);
+        motor.config_kF(0, 0);
 
-        this.coder = new CANCoder(coderID);
+        coder = new CANCoder(coderID);
 
-        this.isInverted = motorReversed;
+        isInverted = motorReversed;
 
-        this.number = num;
+        number = num;
     }
 /**
  * Turns the module to the specified degree
  * @param degree the degree to turn to
  */
     public void turnTo(double degree){
-        double currentDeg = (isInverted ? -coder.getPosition() : coder.getPosition());
-        double acceptable = 2.5;
-        if (Math.abs(currentDeg - degree) <= acceptable){
-          motor.set(ControlMode.PercentOutput, 0);
-        }
-        else{
-          if (currentDeg > degree){
-            motor.set(ControlMode.PercentOutput, isInverted ? -0.1 : 0.1);
-          }
-          else{
-            motor.set(ControlMode.PercentOutput, isInverted ? 0.1 : -0.1);
-          }
-        }
+        // double currentDeg = (isInverted ? -coder.getPosition() : coder.getPosition());
+        // double acceptable = 2.5;
+        // if (Math.abs(currentDeg - degree) <= acceptable){
+        //   motor.set(ControlMode.PercentOutput, 0);
+        // }
+        // else{
+        //   if (currentDeg > degree){
+        //     motor.set(ControlMode.PercentOutput, isInverted ? -0.1 : 0.1);
+        //   }
+        //   else{
+        //     motor.set(ControlMode.PercentOutput, isInverted ? 0.1 : -0.1);
+        //   }
+        // }
+        motor.set(ControlMode.MotionMagic, degree * 2048 / 360);
     }
 /**
  * Gets the angle of the cancoder
@@ -62,7 +67,7 @@ public class MotorPair {
  * Outputs debug info to SmartDashboard
  */
     public void debugToDashboard(){
-      SmartDashboard.putNumber("Module " + number + " angle", coder.getPosition());
+      SmartDashboard.putNumber("CANCoder " + number + " angle", coder.getPosition());
     }
 
     /**

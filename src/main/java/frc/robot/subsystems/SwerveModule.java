@@ -36,6 +36,7 @@ public class SwerveModule extends SubsystemBase {
     pair = new MotorPair(turnMotorID, canCoderID, turnMotorReversed, moduleNumber);
 
     driveMotor = new WPI_TalonFX(driveMotorID);
+    driveMotor.setInverted(driveMotorReversed);
 
     resetEncoders();
   }
