@@ -63,7 +63,6 @@ public class SwerveModule extends SubsystemBase {
     // next it divides it by ticks and motor shaft units to get the rps,
     // next it multiplies that by the circumference of the wheel to get inches per second
     // finally it converts it to meters per second
-    // this was turn motor -- fixed it
     return ((((driveMotor.getSelectedSensorVelocity()) * 10) / (2048 * 7.13) ) * 4 * Math.PI * 0.0254);
   }
 /**
@@ -100,7 +99,6 @@ public class SwerveModule extends SubsystemBase {
     state = SwerveModuleState.optimize(state, new Rotation2d((pair.getPosition() * (Math.PI / 180))));
     // Sets the drive motor's speed from 0.0 to 1.0
     driveMotor.set(ControlMode.PercentOutput, state.speedMetersPerSecond / ModuleConstants.physicalMaxSpeedMetersPerSecond);
-    // funcky function w/o PID to turn
     pair.turnTo(state.angle.getDegrees());
     SmartDashboard.putNumber("Module " + moduleNumber + " angle", state.angle.getDegrees());
   }
@@ -109,7 +107,6 @@ public class SwerveModule extends SubsystemBase {
  */
   @Override
   public void periodic() {
-    // TODO: stop being nerds
     pair.debugToDashboard();
   }
 }

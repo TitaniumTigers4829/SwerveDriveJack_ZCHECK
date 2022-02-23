@@ -54,6 +54,10 @@ public class MotorPair {
         //     motor.set(ControlMode.PercentOutput, isInverted ? 0.1 : -0.1);
         //   }
         // }
+
+        // deg      ticks
+        // ---  X   -----    =   ticks to turn
+        //  1       deg
         motor.set(ControlMode.MotionMagic, degree * 2048 / 360);
     }
 /**
@@ -61,7 +65,7 @@ public class MotorPair {
  * @return the degree of the cancoder
  */
     public double getPosition(){
-      return coder.getPosition();
+      return coder.getPosition() % 360;
     }
 /**
  * Outputs debug info to SmartDashboard
