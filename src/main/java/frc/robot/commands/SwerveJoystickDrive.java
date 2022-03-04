@@ -67,7 +67,6 @@ public class SwerveJoystickDrive extends CommandBase {
     //         * DriveConstants.kTeleDriveMaxAngularSpeedRadiansPerSecond;
     
     ChassisSpeeds chassisSpeeds;
-    // E meme
     // chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(
     // xSpd, ySpd, turnSpd, swerveSubsystem.getRotation2d());
     chassisSpeeds = new ChassisSpeeds(xSpd, ySpd, turnSpd);
